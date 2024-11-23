@@ -18,17 +18,19 @@ class HomeRemoteDataSorceImpl extends HomeRemoteDataSorce {
     return books;
   }
 
+  @override
+  Future<List<BookEntity>> fetchNewestBooks() async {
+    var data = await apiService.get(
+        endPoint: 'volumes?Filtering=free-ebooks&sorting=newest&q=programing');
+    List<BookEntity> books = getBooksList(data);
+    return books;
+  }
+
   List<BookEntity> getBooksList(Map<String, dynamic> data) {
     List<BookEntity> books = [];
     for (var bookMap in data['items']) {
       books.add(BookModel.fromJson(bookMap));
     }
     return books;
-  }
-
-  @override
-  Future<List<BookEntity>> fetchNewestBooks() {
-    // TODO: implement fetchNewestBooks
-    throw UnimplementedError();
   }
 }
