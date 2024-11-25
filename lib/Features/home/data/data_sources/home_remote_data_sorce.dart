@@ -26,7 +26,7 @@ class HomeRemoteDataSorceImpl extends HomeRemoteDataSorce {
     var data = await apiService.get(
         endPoint: 'volumes?Filtering=free-ebooks&sorting=newest&q=programing');
     List<BookEntity> books = getBooksList(data);
-    saveData(books, kFeatureBox);
+    saveData(books, kFeaturedBox);
     return books;
   }
 
