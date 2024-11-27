@@ -1,9 +1,20 @@
 import 'package:bloc/bloc.dart';
 import 'package:bookly/Features/splash/presentation/home/domain/entity/book_entity.dart';
+import 'package:bookly/Features/splash/presentation/home/domain/use_cases/fetch_featured_books.dart';
 import 'package:meta/meta.dart';
 
 part 'featured_books_state.dart';
 
 class FeaturedBooksCubit extends Cubit<FeaturedBooksState> {
-  FeaturedBooksCubit() : super(FeaturedBooksInitial());
+  FeaturedBooksCubit(this.featuredBooksUseCase) : super(FeaturedBooksInitial());
+  final FetchFeaturedBooksUseCase featuredBooksUseCase;
+  Future<void> featuredBooks() async {
+    emit(FeaturedBooksLoading());
+    var result = await featuredBooksUseCase.call();
+    result.fold((faliure) {
+      emit(FeaturedBooksFailure(faliure.message));
+    }, (books) {
+      emit(FeaturedBooksSuccess(books));
+    });
+  }
 }
